@@ -60,8 +60,12 @@ public class PaymentsUtil {
     return transactionInfo;
   }
 
-  private static JSONObject getMerchantInfo(String merchantName) throws JSONException {
-    return new JSONObject().put("merchantName", merchantName);
+  private static JSONObject getMerchantInfo(String merchantName, String merchantId) throws JSONException {
+    JSONObject merchantInfo = new JSONObject();
+    merchantInfo.put("merchantName", merchantName);
+    merchantInfo.put("merchantId", merchantId);
+    
+    return merchantInfo;
   }
 
   private static JSONObject getTokenizationSpecification(final ReadableMap tokenizationSpecification) throws JSONException {
@@ -104,7 +108,7 @@ public class PaymentsUtil {
       paymentDataRequest.put(
           "allowedPaymentMethods", new JSONArray().put(PaymentsUtil.getCardPaymentMethod(requestData.getMap("cardPaymentMethod"))));
       paymentDataRequest.put("transactionInfo", PaymentsUtil.getTransactionInfo(requestData.getMap("transaction")));
-      paymentDataRequest.put("merchantInfo", PaymentsUtil.getMerchantInfo(requestData.getString("merchantName")));
+      paymentDataRequest.put("merchantInfo", PaymentsUtil.getMerchantInfo(requestData.getString("merchantName"), requestData.getString("merchantId")));
 
       return paymentDataRequest;
     } catch (JSONException e) {
